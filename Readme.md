@@ -65,7 +65,7 @@ git clone https://github.com/skgitstor/NotesReactExpressMongoDB.git
 ```
 cd server
 npm install
-npx nodemon server.js   # nust have installed nodemon
+npx nodemon server.js   # must have installed nodemon
 
 ```
 

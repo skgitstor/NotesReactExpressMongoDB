@@ -7,16 +7,16 @@ import axios from "axios"
 
 function App() {
   const [data, setData] = useState([])
-  useEffect(() => {
-    const getAPI = async () => {
-      try {
-        const { data } = await axios.get("http://localHost:5000");
-        setData(data)
-      } catch (err) {
-        console.error(err)
-      }
-      // console.log(data)
+  const getAPI = async () => {
+    try {
+      const { data } = await axios.get("http://localHost:5000");
+      setData(data)
+    } catch (err) {
+      console.error(err)
     }
+    // console.log(data)
+  }
+  useEffect(() => {
     getAPI();
   }, [])
   useEffect(() => {
@@ -29,7 +29,7 @@ function App() {
   return (
     <>
       <Header />
-      <Main />
+      <Main onNoteAdded={getAPI} />
       <Footer />
     </>
   )

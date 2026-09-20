@@ -1,5 +1,7 @@
 import Express from "express"
+// import mongoose from "mongoose";
 import cors from "cors"
+// mongoose.connect("mongodb://localhost:27017/reactNotesApp");
 const app = Express();
 const corsOptions = {
     "origin": "http://localhost:5173",

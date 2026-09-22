@@ -1,6 +1,7 @@
 * {
     font-family: Arial, Helvetica, sans-serif;
-    padding: 0;margin: 0;
+    padding: 0;
+    margin: 0;
 }
 
 
@@ -28,4 +29,63 @@ nav a {
     padding: 10px;
     text-decoration: none;
     color: inherit;
+}
+
+.login-form{
+    width: 40vw;
+    margin: 30px auto;
+
+}
+input{
+    padding: 10px;
+    font-size: 20px;
+    margin-bottom: 30px;
+}
+.login-details label{
+    font-weight: bold;
+}
+.showpassword{
+    gap: 10px;
+}
+#showpassword{
+    margin: 0;
+}
+.formbuttons{
+    padding:0 20px;
+    margin: 20px;
+}
+#signInButton{
+    font-size: medium;
+    padding: 10px;
+    border: 1px solid gray;
+    border-radius: 2px;
+    background-color: rgb(10, 74, 157);
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+
+}
+#signUpOption{
+    font-size: medium;
+    margin: 20px;
+    padding: 10px;
+    border: 1px solid gray;
+    border-radius: 2px;
+    background-color: rgb(8, 154, 8);
+    color: white;
+    text-decoration: none;
+}
+
+
+.d-flex{
+    display: flex;
+}
+.flex-col{
+    flex-direction: column;
+}
+.item-between{
+    align-items: space-between;
+}
+.justify-between{
+    justify-content: space-between;
 }

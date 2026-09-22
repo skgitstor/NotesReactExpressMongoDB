@@ -1,0 +1,31 @@
+* {
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 0;margin: 0;
+}
+
+
+nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #d68f1f;
+    color: white;
+    padding: 10px;
+}
+
+.navCenter ul {
+    display: flex;
+    list-style: none;
+    gap: 20px;
+}
+
+.navlink {
+    cursor: pointer;
+}
+
+nav a {
+    display: block;
+    padding: 10px;
+    text-decoration: none;
+    color: inherit;
+}

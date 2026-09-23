@@ -1,7 +1,9 @@
 import Express from "express"
 import mongoose from "mongoose";
 import cors from "cors"
-mongoose.connect("mongodb://localhost:27017/react_notes_db").then(() => {
+const app = Express();
+app.use(Express.json())
+mongoose.connect("mongodb://localhost:27017/MERN_notes_db").then(() => {
     console.log("mongodbConnected...")
 }).catch((err) => {
     console.log(`error : ${err}`)
@@ -45,7 +47,7 @@ const userSchema = new mongoose.Schema({
 
 const User = mongoose.model('User', userSchema);
 
-const app = Express();
+
 const corsOptions = {
     "origin": "http://localhost:5173",
     "credentials": true,
@@ -56,6 +58,10 @@ const corsOptions = {
 app.use(cors(corsOptions))
 app.get("/", function (req, res) {
     res.json({ name: "HelloServer" })
+})
+app.post("/userRagister", function (req, res) {
+    console.log(`req : ${req}`)
+    res.json(req.body)
 })
 
 app.listen(5000, () => {

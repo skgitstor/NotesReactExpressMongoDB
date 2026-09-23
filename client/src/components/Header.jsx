@@ -22,8 +22,8 @@ const Header = () => {
                         </li>
                     </ul>
                 </div>
-                <div className="navRight"><Link to="/Profile">Login</Link></div>
-                {/* <div className="navRight"><Link to="/AuthPage/login">Login</Link></div> */}
+                {/* <div className="navRight"><Link to="/Profile">Profile</Link></div> */}
+                <div className="navRight"><Link to="/authPage/login">Login</Link></div>
             </nav>
         </header>
     </>);

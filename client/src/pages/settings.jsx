@@ -1,4 +1,4 @@
-const Settings = ({onNoteAdded}) => {
+const Settings = () => {
 
     const clickHandle = (e)=>{
         e.preventDefault();

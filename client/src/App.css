@@ -31,30 +31,42 @@ nav a {
     color: inherit;
 }
 
-.login-form{
+.container {
+    height: 70vh;
+}
+
+.login-form {
     width: 40vw;
     margin: 30px auto;
 
 }
-input{
+
+input {
     padding: 10px;
     font-size: 20px;
     margin-bottom: 30px;
 }
-.login-details label{
+
+.login-details label {
     font-weight: bold;
 }
-.showpassword{
+
+.showpassword {
     gap: 10px;
 }
-#showpassword{
+
+#showpassword {
     margin: 0;
 }
-.formbuttons{
-    padding:0 20px;
-    margin: 20px;
+
+.formbuttons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
-#signInButton{
+
+#signInButton {
+    margin: 0;
     font-size: medium;
     padding: 10px;
     border: 1px solid gray;
@@ -65,7 +77,8 @@ input{
     cursor: pointer;
 
 }
-#signUpOption{
+
+#signUpOption {
     font-size: medium;
     margin: 20px;
     padding: 10px;
@@ -77,15 +90,18 @@ input{
 }
 
 
-.d-flex{
+.d-flex {
     display: flex;
 }
-.flex-col{
+
+.flex-col {
     flex-direction: column;
 }
-.item-between{
+
+.item-between {
     align-items: space-between;
 }
-.justify-between{
+
+.justify-between {
     justify-content: space-between;
 }

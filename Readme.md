@@ -56,7 +56,7 @@ A clean full-stack Notes web application built with a React frontend and an Expr
 ### 1. Clone the Repository
 
 ```
-git clone https://github.com/skgitstor/NotesReactExpressMongoDB.git
+git clone https://github.com/skgitstor/mern-notes-app.git
 
 ```
 

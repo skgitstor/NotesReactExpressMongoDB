@@ -1,6 +1,8 @@
 import Express from "express"
 import mongoose from "mongoose";
 import cors from "cors"
+import bcrypt from "bcrypt"
+
 const app = Express();
 app.use(Express.json())
 mongoose.connect("mongodb://localhost:27017/MERN_notes_db").then(() => {
@@ -59,9 +61,61 @@ app.use(cors(corsOptions))
 app.get("/", function (req, res) {
     res.json({ name: "HelloServer" })
 })
-app.post("/userRagister", function (req, res) {
-    console.log(`req : ${req}`)
-    res.json(req.body)
+app.post("/userRagister", async function (req, res) {
+    // console.log(`req : ${req.body.Password}`)
+
+    const { name, email, Password } = req.body;
+    // console.log(`extracted : ${name}, ${email}, ${Password}`)
+
+    const myPlaintextPassword = Password;
+    const saltRounds = 10;
+
+    // res.json(req.body)
+
+    bcrypt.genSalt(saltRounds, function (err, salt) {
+        bcrypt.hash(myPlaintextPassword, salt, function (err, hash) {
+
+            
+            try {
+                
+                const newUser = User.create({ name, email, password: hash })
+                // newUser.save();
+                res.status(201).json({
+                    success: true,
+                    message: 'User registered successfully!',
+                    userId: newUser._id
+                });
+                console.log(`user :  ${name} is incerted..`)
+
+            } catch (err) {
+                res.send(err);
+            }
+
+
+        });
+    });
+
+
+
+
+
+
+
+
+})
+app.post('/userLogin', (req, res) => {
+    const hash = `$2b$10$x97rfAjV37rgFZQinxz8Wubc8AwrxUb8wQlqXzn5dnieK5AiFx4Uy`
+    console.log(`Logged in...`)
+    bcrypt.compare(myPlaintextPassword, hash, function (err, result) {
+        // result == true
+        console.log(`Result: ${result}`)
+    });
+    // bcrypt.compare(someOtherPlaintextPassword, hash, function (err, result) {
+    //     // result == false
+    // });
+
+
+
 })
 
 app.listen(5000, () => {

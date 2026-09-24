@@ -10,7 +10,6 @@ mongoose.connect("mongodb://localhost:27017/MERN_notes_db").then(() => {
 }).catch((err) => {
     console.log(`error : ${err}`)
 })
-
 const noteSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -27,7 +26,6 @@ const noteSchema = new mongoose.Schema({
     }
 }, { timestamps: true }); // created_at aur updated_at apne aap add ho jayenge
 const Note = mongoose.model('Note', noteSchema);
-
 const userSchema = new mongoose.Schema({
     name: {
         type: String,
@@ -46,10 +44,7 @@ const userSchema = new mongoose.Schema({
         required: true
     }
 }, { timestamps: true });
-
 const User = mongoose.model('User', userSchema);
-
-
 const corsOptions = {
     "origin": "http://localhost:5173",
     "credentials": true,
@@ -62,62 +57,57 @@ app.get("/", function (req, res) {
     res.json({ name: "HelloServer" })
 })
 app.post("/userRagister", async function (req, res) {
-    // console.log(`req : ${req.body.Password}`)
-
     const { name, email, Password } = req.body;
-    // console.log(`extracted : ${name}, ${email}, ${Password}`)
-
     const myPlaintextPassword = Password;
-    const saltRounds = 10;
+    //-------------------------------------------------------------
+    //Async mathod................(recomended.)
+    try {
+        let saltRound = 10; // variable to remember the concept..
+        const hash = await bcrypt.hash(myPlaintextPassword, saltRound);
+        const newUser = await User({ name, email, password: hash })
+        const saved = await newUser.save();
 
-    // res.json(req.body)
-
-    bcrypt.genSalt(saltRounds, function (err, salt) {
-        bcrypt.hash(myPlaintextPassword, salt, function (err, hash) {
-
-            
-            try {
-                
-                const newUser = User.create({ name, email, password: hash })
-                // newUser.save();
-                res.status(201).json({
-                    success: true,
-                    message: 'User registered successfully!',
-                    userId: newUser._id
-                });
-                console.log(`user :  ${name} is incerted..`)
-
-            } catch (err) {
-                res.send(err);
-            }
-
-
-        });
-    });
-
-
-
-
-
-
-
-
+        res.status(201).json({
+            success: true,
+            message: 'User registered successfully!',
+            userId: saved._id
+        })
+        console.log(newUser._id)
+    } catch (err) { console.log("there is some error") }
+    //-------------------------------------------------------------
 })
-app.post('/userLogin', (req, res) => {
-    const hash = `$2b$10$x97rfAjV37rgFZQinxz8Wubc8AwrxUb8wQlqXzn5dnieK5AiFx4Uy`
-    console.log(`Logged in...`)
-    bcrypt.compare(myPlaintextPassword, hash, function (err, result) {
-        // result == true
-        console.log(`Result: ${result}`)
-    });
-    // bcrypt.compare(someOtherPlaintextPassword, hash, function (err, result) {
-    //     // result == false
-    // });
+app.post('/userLogin', async (req, res) => {
+    const { email, Password } = req.body;
+    console.log(`${email} is loggin in`)
+    try {
+        const user = await User.findOne({ email: email });
 
+        // console.log(user)
 
+        if (!user) {
+            res.status(404).json({
+                message: "User not found"
+            })
+        } else {
+            const dbname = user.name;
+            const dbemail = user.email;
+            const dbhash = user.password
+        
 
+        const match = await bcrypt.compare(Password, dbhash);
+        console.log(match)
+        if (match == true) {
+            res.json(`${dbname} logged in successfully...`);
+        } else {
+            res.send("Wrong Password...")
+        }
+    }
+
+    } catch (err) {
+        console.log(err);
+        res.send(`There is some error for ${email}`)
+    }
 })
-
 app.listen(5000, () => {
     console.log("Server is running at http://localHost:5000")
 });

@@ -1,25 +1,40 @@
+import axios from 'axios'
+import { useEffect, useState } from 'react'
 import { Route, Link, Routes } from 'react-router-dom'
 
-const showPassword = (e) => {
-    if (e.target.checked) {
-
-        loginPassword.type = 'text'
-    } else {
-        loginPassword.type = 'password'
-    }
-}
-const LoginSubmit = (e) => {
-    e.preventDefault();
-    try {
-        const formData = new FormData(e.target)
-        console.log(`Email : ${formData.get('loginEmail')}`)
-        console.log(`Password : ${formData.get('loginPassword')}`)
-        console.log(`Show : ${formData.get('showpassword')}`)
-    } catch (err) {
-        console.log(err)
-    }
-}
 const Loginform = () => {
+    const showPassword = (e) => {
+        if (e.target.checked) {
+    
+            loginPassword.type = 'text'
+        } else {
+            loginPassword.type = 'password'
+        }
+    }
+    const [res, setRes] = useState({});
+    const LoginSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const formData = new FormData(e.target)
+            console.log(`Email : ${formData.get('loginEmail')}`)
+            console.log(`Password : ${formData.get('loginPassword')}`)
+            const userobj = {
+                "email": formData.get('loginEmail'),
+                "Password": formData.get('loginPassword')
+            }
+
+            const data = await axios.post("http://localHost:5000/userLogin", userobj);
+            setRes(data)
+    
+        } catch (err) {
+            console.log(err)
+        }
+    }
+    useEffect(()=>{
+        if(res != null){
+            console.log(res);
+        }
+    },[res])
     return (
         <>
             <div className="container">

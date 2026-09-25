@@ -2,9 +2,28 @@ import Express from "express"
 import mongoose from "mongoose";
 import cors from "cors"
 import bcrypt from "bcrypt"
-
+import session from "express-session";
 const app = Express();
+
 app.use(Express.json())
+
+app.use(session({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false,
+    cookie: function (req) {
+        var match = req.url.match(/^\/([^/]+)/);
+        return {
+            //   path: match ? '/' + match[1] : '/',
+            httpOnly: true,
+            //   secure: req.secure || false,
+            maxAge: 60000
+        }
+    }
+}))
+
+
+
 mongoose.connect("mongodb://localhost:27017/MERN_notes_db").then(() => {
     console.log("mongodbConnected...")
 }).catch((err) => {
@@ -56,6 +75,12 @@ app.use(cors(corsOptions))
 app.get("/", function (req, res) {
     res.json({ name: "HelloServer" })
 })
+
+
+
+
+
+
 app.post("/userRagister", async function (req, res) {
     const { name, email, Password } = req.body;
     const myPlaintextPassword = Password;
@@ -67,10 +92,18 @@ app.post("/userRagister", async function (req, res) {
         const newUser = await User({ name, email, password: hash })
         const saved = await newUser.save();
 
+        req.session.user = {
+            id: saved._id,
+            username: saved.name,
+            email: saved.email
+        };
+
+
         res.status(201).json({
             success: true,
             message: 'User registered successfully!',
-            userId: saved._id
+            userId: saved._id,
+            user:req.session.user
         })
         console.log(newUser._id)
     } catch (err) { console.log("there is some error") }
@@ -92,16 +125,16 @@ app.post('/userLogin', async (req, res) => {
             const dbname = user.name;
             const dbemail = user.email;
             const dbhash = user.password
-        
 
-        const match = await bcrypt.compare(Password, dbhash);
-        console.log(match)
-        if (match == true) {
-            res.json(`${dbname} logged in successfully...`);
-        } else {
-            res.send("Wrong Password...")
+
+            const match = await bcrypt.compare(Password, dbhash);
+            console.log(match)
+            if (match == true) {
+                res.json(`${dbname} logged in successfully...`);
+            } else {
+                res.send("Wrong Password...")
+            }
         }
-    }
 
     } catch (err) {
         console.log(err);

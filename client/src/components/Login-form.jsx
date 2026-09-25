@@ -3,6 +3,9 @@ import { useEffect, useState } from 'react'
 import { Route, Link, Routes } from 'react-router-dom'
 
 const Loginform = () => {
+    const enterPassword = (e) =>{
+        console.log(e.target.value)
+    }
     const showPassword = (e) => {
         if (e.target.checked) {
     
@@ -18,6 +21,8 @@ const Loginform = () => {
             const formData = new FormData(e.target)
             console.log(`Email : ${formData.get('loginEmail')}`)
             console.log(`Password : ${formData.get('loginPassword')}`)
+            if(formData.get(`loginPassword`).length > 0){
+                
             const userobj = {
                 "email": formData.get('loginEmail'),
                 "Password": formData.get('loginPassword')
@@ -25,6 +30,9 @@ const Loginform = () => {
 
             const data = await axios.post("http://localHost:5000/userLogin", userobj);
             setRes(data)
+            }else{
+                console.log("please Enter The Password")
+            }
     
         } catch (err) {
             console.log(err)
@@ -44,8 +52,8 @@ const Loginform = () => {
                             <label htmlFor="loginEmail">Email</label>
                             <input id='loginEmail' type="text" name="loginEmail" />
 
-                            <label htmlFor="loginPassword">Password</label>
-                            <input id='loginPassword' type="password" name="loginPassword" />
+                            <label htmlFor="loginPassword">Password <span>Please Enter Password...</span></label>
+                            <input onChange={(e) => { enterPassword(e); }} id='loginPassword' type="password" name="loginPassword" />
                         </div>
 
                         <div className='d-flex item-between justify-between'>

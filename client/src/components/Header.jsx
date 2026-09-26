@@ -1,6 +1,12 @@
+import axios from "axios";
 import React from "react";
 import { Route, Link, Routes } from 'react-router-dom'
 const Header = () => {
+    const Logout = async (e) =>{
+        e.preventDefault();
+        const logout = await axios.get("http://localhost:5000/api/logout",{withCredentials: true});
+        console.log(logout)
+    }
     return (<>
         <header>
 
@@ -23,7 +29,10 @@ const Header = () => {
                     </ul>
                 </div>
                 {/* <div className="navRight"><Link to="/Profile">Profile</Link></div> */}
-                <div className="navRight"><Link to="/authPage/login">Login</Link></div>
+                <div className="d-flex navRight">
+                    <Link to="/authPage/login">Login</Link>
+                    <Link onClick={(e)=>{Logout(e);}}>Logout</Link>
+                </div>
             </nav>
         </header>
     </>);

@@ -3,8 +3,16 @@ import { useEffect, useState } from 'react'
 import { Route, Link, Routes } from 'react-router-dom'
 
 const Loginform = () => {
+    const [email,setEmail] = useState('')
+    const [password,setPassword] = useState('')
+
+    const enterEmail = (e) =>{
+        setEmail(e.target.value);
+    }
+
     const enterPassword = (e) =>{
-        console.log(e.target.value)
+        setPassword(e.target.value);
+        console.log(password)
     }
     const showPassword = (e) => {
         if (e.target.checked) {
@@ -19,7 +27,7 @@ const Loginform = () => {
         e.preventDefault();
         try {
             const formData = new FormData(e.target)
-            console.log(`Email : ${formData.get('loginEmail')}`)
+            console.log(`Email : ${email}`)
             console.log(`Password : ${formData.get('loginPassword')}`)
             if(formData.get(`loginPassword`).length > 0){
                 
@@ -28,8 +36,10 @@ const Loginform = () => {
                 "Password": formData.get('loginPassword')
             }
 
-            const data = await axios.post("http://localHost:5000/userLogin", userobj);
+            const data = await axios.post("http://localHost:5000/userLogin", userobj,{withCredentials: true});
             setRes(data)
+            setPassword(``)
+            setEmail(``)
             }else{
                 console.log("please Enter The Password")
             }
@@ -50,10 +60,10 @@ const Loginform = () => {
                     <form onSubmit={(e) => { LoginSubmit(e); }}>
                         <div className="login-details d-flex flex-col">
                             <label htmlFor="loginEmail">Email</label>
-                            <input id='loginEmail' type="text" name="loginEmail" />
+                            <input id='loginEmail' onChange={(e) => { enterEmail(e); }} value={email} type="text" name="loginEmail" />
 
                             <label htmlFor="loginPassword">Password <span>Please Enter Password...</span></label>
-                            <input onChange={(e) => { enterPassword(e); }} id='loginPassword' type="password" name="loginPassword" />
+                            <input onChange={(e) => { enterPassword(e); }} value={password} id='loginPassword' type="password" name="loginPassword" />
                         </div>
 
                         <div className='d-flex item-between justify-between'>

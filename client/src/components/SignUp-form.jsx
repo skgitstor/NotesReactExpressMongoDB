@@ -6,6 +6,25 @@ import { useEffect, useState } from 'react'
 
 const Ragisterform = () => {
     const [res, setRes] = useState('hello');
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [crpassword, setCrPassword] = useState('');
+
+    const enterName = (e) =>{
+        setName(e.target.value)
+        
+    }
+    const enterEmail = (e) =>{
+        setEmail(e.target.value)
+    }
+    const enterPassword = (e) =>{
+        setPassword(e.target.value)
+    }
+    const enterCrPassword = (e) =>{
+        setCrPassword(e.target.value)
+    }
+
 
     const showPassword = (e) => {
         if (e.target.checked) {
@@ -24,11 +43,18 @@ const Ragisterform = () => {
                 "email": formData.get('newEmail'),
                 "Password": formData.get('NewPassword')
             }
-            const data = await axios.post("http://localHost:5000/userRagister", userobj);
+            const data = await axios.post("http://localHost:5000/userRagister", userobj,{withCredentials: true});
             setRes(data);
+            setName('')
+            setEmail('')
+            setPassword('')
+            setCrPassword('')
+
         } catch (err) {
             console.log(err)
         }
+
+        
     }
     useEffect(() => {
         if (res) {
@@ -45,16 +71,16 @@ const Ragisterform = () => {
                         <div className="login-details d-flex flex-col">
 
                             <label htmlFor="newName">Name</label>
-                            <input id='newName' type="text" name="newName" placeholder='Enter Your Name' />
+                            <input onChange={(e)=>{enterName(e)}} value={name} id='newName' type="text" name="newName" placeholder='Enter Your Name' />
 
                             <label htmlFor="newEmail">Email</label>
-                            <input id='newEmail' type="text" name="newEmail" placeholder='Enter Email' />
+                            <input onChange={(e)=>{enterEmail(e)}} value={email} id='newEmail' type="text" name="newEmail" placeholder='Enter Email' />
 
                             <label htmlFor="NewPassword">Password</label>
-                            <input id='NewPassword' type="password" name="NewPassword" placeholder='Password' />
+                            <input onChange={(e)=>{enterPassword(e)}} value={password} id='NewPassword' type="password" name="NewPassword" placeholder='Password' />
 
                             <label htmlFor="NewPasswordC">Confirm Password</label>
-                            <input id='NewPasswordC' type="password" name="NewPasswordC" placeholder='Password' />
+                            <input onChange={(e)=>{enterCrPassword(e)}} value={crpassword} id='NewPasswordC' type="password" name="NewPasswordC" placeholder='Password' />
 
                         </div>
 
